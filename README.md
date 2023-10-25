@@ -3,6 +3,10 @@ This is [look](https://man7.org/linux/man-pages/man1/look.1.html) source for [hr
 
 ![http://gyazo.com/c21c8201fa7a571c7665bc7455d88631.png](http://gyazo.com/c21c8201fa7a571c7665bc7455d88631.png)
 
+## dependence
+[ripgrep](https://github.com/BurntSushi/ripgrep)
+`wamerican` or `wbritish`
+
 ## For nvim-cmp
 ```lua
 require('cmp').setup({

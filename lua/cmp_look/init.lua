@@ -1,4 +1,3 @@
-local cmp = require('cmp')
 local luv = require('luv')
 local debug = require('cmp.utils.debug')
 local config = require('cmp.config')
@@ -119,31 +118,9 @@ do
 end
 
 local function construct_args(q, option, len)
-  local args = {}
-  -- https://github.com/util-linux/util-linux/blob/90eeee21c69aa805709376ad8282e68b5bd65c34/misc-utils/look.c#L137-L149
-  local dflag = not option.dict or option.dflag
-  if option.dict then
-    if option.dflag then
-      table.insert(args, '-d')
-    end
-    if option.fflag then
-      table.insert(args, '-f')
-    end
-    for _, x in ipairs({'--', q, option.dict}) do
-      table.insert(args, x)
-    end
-  else
-    for _, x in ipairs({'--', q}) do
-      table.insert(args, x)
-    end
-  end
-  if dflag then
-    local alph = string.gsub(q, '%W', '')
-    if string.len(alph) < len then
-      return nil
-    end
-  end
-  return args
+    local pattern = "^" .. q
+    local args = {"-i", pattern, "/usr/share/dict/words"}
+    return args
 end
 
 -- Generic source options should be easily accessible from all sources
@@ -171,7 +148,7 @@ M.complete = function(self, request, callback)
       args = args,
       stdio = stdioe
     }
-    handle, pid = luv.spawn('look', spawn_params, function(code, signal)
+    handle, pid = luv.spawn('rg', spawn_params, function(code, signal)
       stdioe[1]:close()
       stdioe[2]:close()
       stdioe[3]:close()
